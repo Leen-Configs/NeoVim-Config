@@ -74,3 +74,5 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+require("base46").toggle_transparency()
