@@ -1,5 +1,5 @@
--- Set colorscheme              
--- vim.o.termguicolors = false               
+-- Set colorscheme
+-- vim.o.termguicolors = false
 -- vim.cmd [[colorscheme default]]
 
 
@@ -64,6 +64,13 @@ require("lazy").setup({
 
   { import = "plugins" },
 }, lazy_config)
+
+require 'nvim-tree'.setup {
+  filters = {
+    dotfiles = false, -- Set this to false to show dotfiles
+  }
+  -- other settings
+}
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
