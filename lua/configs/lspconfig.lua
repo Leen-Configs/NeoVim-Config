@@ -16,7 +16,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- typescript
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   on_attach = on_attach,
   on_init = on_init,
 
@@ -91,4 +91,25 @@ lspconfig.gopls.setup {
       }
     }
   }
+}
+
+-- Rust language server setup
+lspconfig.rust_analyzer.setup {
+  on_attach = custom_on_attach,
+  on_init = on_init,
+  capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      assist = {
+        importGranularity = "module",
+        importPrefix = "by_self",
+      },
+      cargo = {
+        loadOutDirsFromCheck = true,
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
 }
