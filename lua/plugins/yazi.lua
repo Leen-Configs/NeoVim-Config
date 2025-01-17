@@ -1,6 +1,6 @@
 ---@type LazySpec
 
-return {
+local yazi = {
   "mikavilpas/yazi.nvim",
   event = "VeryLazy",
   keys = {
@@ -44,3 +44,5 @@ return {
     },
   },
 }
+
+return yazi

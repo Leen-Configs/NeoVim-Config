@@ -1,4 +1,4 @@
-return {
+local formatting = {
         "stevearc/conform.nvim",
   event = { "BufReadPre", "BufNewFile" },
   config = function()
@@ -33,6 +33,6 @@ return {
       })
     end, {desc = "Format file or range (in visual mode)"})
   end,
-
-
 }
+
+return formatting
