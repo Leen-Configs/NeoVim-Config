@@ -1,79 +1,52 @@
--- EXAMPLE 
-local on_attach = require("nvchad.configs.lspconfig").on_attach
-local on_init = require("nvchad.configs.lspconfig").on_init
-local capabilities = require("nvchad.configs.lspconfig").capabilities
+-- load defaults i.e lua_lsp
+require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "gopls", "jedi_language_server" , "ccls", "cmake", "templ" }
+
+-- EXAMPLE
+local servers = { "html", "cssls" }
+local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup({
-    on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
-  })
+  lspconfig[lsp].setup {
+    on_attach = nvlsp.on_attach,
+    on_init = nvlsp.on_init,
+    capabilities = nvlsp.capabilities,
+  }
 end
 
--- typescript
-lspconfig.ts_ls.setup {
-  on_attach = on_attach,
-  on_init = on_init,
-
-  capabilities = capabilities,
-}
+-- configuring single server, example: typescript
+-- lspconfig.ts_ls.setup {
+--   on_attach = nvlsp.on_attach,
+--   on_init = nvlsp.on_init,
+--   capabilities = nvlsp.capabilities,
+-- }
 
 lspconfig.html.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
+  on_attach = on_attach,
+  capabilities = capabilities,
     filetypes = { "html", "templ" },
 })
 
 lspconfig.htmx.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
+  on_attach = on_attach,
+  capabilities = capabilities,
     filetypes = { "html", "templ" },
 })
 
 lspconfig.tailwindcss.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "templ", "astro", "javascript", "typescript", "react" },
-    settings = {
-      tailwindCSS = {
-        includeLanguages = {
-          templ = "html",
-        },
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "templ", "astro", "javascript", "typescript", "react" },
+  settings = {
+    tailwindCSS = {
+      includeLanguages = {
+        templ = "html",
       },
     },
+  },
 })
-
-
-local custom_format = function()
-    if vim.bo.filetype == "templ" then
-        local bufnr = vim.api.nvim_get_current_buf()
-        local filename = vim.api.nvim_buf_get_name(bufnr)
-        local cmd = "templ fmt " .. vim.fn.shellescape(filename)
-
-        vim.fn.jobstart(cmd, {
-            on_exit = function()
-                -- Reload the buffer only if it's still the current buffer
-                if vim.api.nvim_get_current_buf() == bufnr then
-                    vim.cmd('e!')
-                end
-            end,
-        })
-    else
-        vim.lsp.buf.format()
-    end
-end
-
-local on_attach = function(client, bufnr)
-    local opts = { buffer = bufnr, remap = false }
-    -- other configuration options
-    vim.keymap.set("n", "<leader>lf", custom_format, opts)
-end
-
 
 -- Go language server
 lspconfig.gopls.setup {
